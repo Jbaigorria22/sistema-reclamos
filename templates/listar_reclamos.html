@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Lista de Reclamos</h2>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Barrio</th>
+        <th>Descripción</th>
+        <th>Fecha</th>
+        <th>Estado</th>
+        <th>Acción</th>
+    </tr>
+
+    {% for r in reclamos %}
+    <tr>
+        <td>{{ r[0] }}</td>
+        <td>{{ r[1] }}</td>
+        <td>{{ r[2] }}</td>
+        <td>{{ r[3] }}</td>
+        <td>{{ r[4] }}</td>
+
+        <td>
+            {% if r[5] == "Pendiente" %}
+                <span class="badge pendiente">Pendiente</span>
+            {% else %}
+                <span class="badge resuelto">Resuelto</span>
+            {% endif %}
+        </td>
+
+        <td>
+            {% if r[5] == "Pendiente" %}
+                <a class="btn" href="/resolver/{{ r[0] }}">Marcar Resuelto</a>
+            {% else %}
+                —
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}

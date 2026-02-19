@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Cargar Reclamo</h2>
+
+<form method="POST">
+
+    <label>Nombre:</label>
+    <input type="text" name="nombre" required>
+
+    <label>Barrio:</label>
+    <input type="text" name="barrio" required>
+
+    <label>Descripción:</label>
+    <textarea name="descripcion" required></textarea>
+
+    <br><br>
+    <button type="submit" class="btn">Guardar</button>
+
+</form>
+
+{% endblock %}

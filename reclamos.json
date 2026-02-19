@@ -1,0 +1,42 @@
+[
+    {
+        "numero_servicio": 1,
+        "nombre": "Joselele",
+        "barrio": "Santa Rosa",
+        "descripcion": "Presion Agua",
+        "fecha": "11/02/2026 12:30",
+        "estado": "Resuelto"
+    },
+    {
+        "numero_servicio": 2,
+        "nombre": "Negro",
+        "barrio": "Blanco",
+        "descripcion": "QUEJA",
+        "fecha": "12/02/2026 14:46",
+        "estado": "Pendiente"
+    },
+    {
+        "numero_servicio": 3,
+        "nombre": "Trevor",
+        "barrio": "el trevol",
+        "descripcion": "presion agua",
+        "fecha": "12/02/2026 15:49",
+        "estado": "Resuelto"
+    },
+    {
+        "numero_servicio": 3,
+        "nombre": "Trevor",
+        "barrio": "el trevol",
+        "descripcion": "presion agua",
+        "fecha": "12/02/2026 15:49",
+        "estado": "Pendiente"
+    },
+    {
+        "numero_servicio": 4,
+        "nombre": "Jorge",
+        "barrio": "Kennedy",
+        "descripcion": "Caño roto",
+        "fecha": "2026-02-12 16:04:49",
+        "estado": "Pendiente"
+    }
+]

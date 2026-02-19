@@ -1,0 +1,23 @@
+Un sistema de gestión de reclamos con arquitectura modular, persistencia en JSON, modelo de dominio orientado a objetos y exportación de datos, luego migrado a una aplicación web.
+
+¿Qué problema resuelve?
+
+Tu sistema:
+
+Permite registrar reclamos de vecinos.
+
+Asignarles un número único.
+
+Guardarlos de forma persistente.
+
+Consultarlos por distintos criterios.
+
+Cambiar su estado.
+
+Obtener estadísticas.
+
+Exportar información.
+
+Eso es un sistema CRUD real.
+
+(Create, Read, Update, Export)
