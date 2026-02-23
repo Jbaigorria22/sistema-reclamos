@@ -41,3 +41,15 @@ def cambiar_estado_reclamo(id_reclamo):
 
     conn.commit()
     conn.close()
+
+def cambiar_estado_reclamo(id_reclamo, nuevo_estado):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "UPDATE reclamos SET estado = ? WHERE id = ?",
+        (nuevo_estado, id_reclamo)
+    )
+
+    conn.commit()
+    conn.close()

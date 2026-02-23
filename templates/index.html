@@ -1,13 +1,46 @@
 {% extends "base.html" %}
 
-{% block contenido %}
+{% block content %}
 
-<h1>Bienvenido</h1>
-<p>Sistema de gestión de reclamos de la cooperativa.</p>
+<h3 class="mb-4">Panel de Control</h3>
 
-<div class="acciones">
-    <a class="btn" href="/nuevo">Cargar nuevo reclamo</a>
-    <a class="btn btn-secundario" href="/reclamos">Ver reclamos</a>
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="card card-dashboard p-3">
+            <div>Total Reclamos</div>
+            <div class="stat-number">{{ total }}</div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card-dashboard p-3">
+            <div>Pendientes</div>
+            <div class="stat-number text-warning">{{ pendientes }}</div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card-dashboard p-3">
+            <div>Resueltos</div>
+            <div class="stat-number text-success">{{ resueltos }}</div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card card-dashboard mt-4 p-4">
+
+    <h5>Accesos rápidos</h5>
+
+    <a href="{{ url_for('nuevo_reclamo') }}" class="btn btn-primary mt-2">
+        + Nuevo Reclamo
+    </a>
+
+    <a href="{{ url_for('reclamos') }}" class="btn btn-outline-secondary mt-2">
+        Ver Reclamos
+    </a>
+
 </div>
 
 {% endblock %}
