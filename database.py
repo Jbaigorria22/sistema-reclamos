@@ -11,12 +11,13 @@ def crear_tabla():
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS reclamos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            dni TEXT,
-            nombre TEXT,
-            direccion TEXT,
-            tipo TEXT,
-            descripcion TEXT,
-            estado TEXT
+            dni TEXT NOT NULL,
+            nro_socio TEXT NOT NULL,
+            nombre TEXT NOT NULL,
+            direccion TEXT NOT NULL,
+            tipo TEXT NOT NULL,
+            descripcion TEXT NOT NULL,
+            estado TEXT DEFAULT 'Pendiente'
         )
     """)
     conn.commit()
@@ -32,8 +33,7 @@ def crear_tabla_usuarios():
             password TEXT
         )
     """)
-    # Borramos el admin viejo y creamos el nuevo con 1234 para estar seguros
-    cursor.execute("DELETE FROM usuarios WHERE username='admin'")
-    cursor.execute("INSERT INTO usuarios (username, password) VALUES ('admin', '1234')")
+    # Usuario por defecto para administración
+    cursor.execute("INSERT OR IGNORE INTO usuarios (username, password) VALUES ('admin', '1234')")
     conn.commit()
     conn.close()

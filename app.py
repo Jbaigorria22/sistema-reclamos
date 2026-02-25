@@ -5,7 +5,6 @@ from functools import wraps
 app = Flask(__name__)
 app.secret_key = "clave_secreta"
 
-# Aseguramos que las tablas existan al arrancar
 crear_tabla()
 crear_tabla_usuarios()
 
@@ -23,20 +22,15 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-
         conn = get_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM usuarios WHERE username=? AND password=?", (username, password))
         user = cursor.fetchone()
         conn.close()
-
         if user:
             session["user"] = username
             return redirect(url_for("index"))
-        else:
-            # En lugar de un return directo, pasamos el error al template
-            error = "Credenciales incorrectas. Intente de nuevo."
-
+        error = "Credenciales incorrectas."
     return render_template("login.html", error=error)
 
 @app.route("/logout")
@@ -64,9 +58,9 @@ def reclamos():
     query = "SELECT * FROM reclamos WHERE 1=1"
     params = []
     if busqueda:
-        query += " AND (dni LIKE ? OR nombre LIKE ? OR direccion LIKE ?)"
-        like_val = f"%{busqueda}%"
-        params.extend([like_val, like_val, like_val])
+        query += " AND (dni LIKE ? OR nro_socio LIKE ? OR nombre LIKE ? OR direccion LIKE ?)"
+        val = f"%{busqueda}%"
+        params.extend([val, val, val, val])
     cursor.execute(query, params)
     reclamos_data = cursor.fetchall()
     total = cursor.execute("SELECT COUNT(*) FROM reclamos").fetchone()[0]
@@ -80,17 +74,44 @@ def reclamos():
 def nuevo_reclamo():
     if request.method == "POST":
         dni = request.form["dni"]
+        nro_socio = request.form["nro_socio"]
         nombre = request.form["nombre"]
         direccion = request.form["direccion"]
         tipo = request.form["tipo"]
         descripcion = request.form["descripcion"]
         conn = get_connection()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO reclamos (dni, nombre, direccion, tipo, descripcion, estado) VALUES (?, ?, ?, ?, ?, 'Pendiente')", (dni, nombre, direccion, tipo, descripcion))
+        cursor.execute("INSERT INTO reclamos (dni, nro_socio, nombre, direccion, tipo, descripcion, estado) VALUES (?, ?, ?, ?, ?, ?, 'Pendiente')", 
+                       (dni, nro_socio, nombre, direccion, tipo, descripcion))
         conn.commit()
         conn.close()
         return redirect(url_for("reclamos"))
     return render_template("nuevo_reclamo.html")
+
+@app.route("/editar/<int:id>", methods=["GET", "POST"])
+@login_required
+def editar_reclamo(id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    if request.method == "POST":
+        dni = request.form["dni"]
+        nro_socio = request.form["nro_socio"]
+        nombre = request.form["nombre"]
+        direccion = request.form["direccion"]
+        tipo = request.form["tipo"]
+        descripcion = request.form["descripcion"]
+        estado = request.form["estado"]
+        cursor.execute("""
+            UPDATE reclamos SET dni=?, nro_socio=?, nombre=?, direccion=?, tipo=?, descripcion=?, estado=?
+            WHERE id=?
+        """, (dni, nro_socio, nombre, direccion, tipo, descripcion, estado, id))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('reclamos'))
+    cursor.execute("SELECT * FROM reclamos WHERE id=?", (id,))
+    reclamo = cursor.fetchone()
+    conn.close()
+    return render_template("editar_reclamo.html", r=reclamo)
 
 @app.route("/resolver/<int:id>")
 @login_required

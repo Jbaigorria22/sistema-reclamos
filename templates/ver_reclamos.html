@@ -1,74 +1,78 @@
 {% extends "base.html" %}
 {% block content %}
-
-<h2 class="mb-4">Gestión de Reclamos</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark">Gestión de Reclamos</h2>
+    <a href="{{ url_for('nuevo_reclamo') }}" class="btn btn-success shadow-sm">+ Nuevo Reclamo</a>
+</div>
 
 <div class="row mb-4">
     <div class="col-md-4">
-        <div class="card p-3 text-center shadow-sm">
-            <h6 class="text-muted">Total</h6>
-            <h3>{{ total }}</h3>
+        <div class="card shadow-sm border-0 border-start border-primary border-5">
+            <div class="card-body text-center">
+                <h6 class="text-muted fw-bold small">TOTAL RECLAMOS</h6>
+                <h2 class="fw-bold">{{ total }}</h2>
+            </div>
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card p-3 text-center shadow-sm">
-            <h6 class="text-warning">Pendientes</h6>
-            <h3>{{ pendientes }}</h3>
+        <div class="card shadow-sm border-0 border-start border-warning border-5">
+            <div class="card-body text-center">
+                <h6 class="text-warning fw-bold small">PENDIENTES</h6>
+                <h2 class="fw-bold">{{ pendientes }}</h2>
+            </div>
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card p-3 text-center shadow-sm">
-            <h6 class="text-success">Resueltos</h6>
-            <h3>{{ resueltos }}</h3>
+        <div class="card shadow-sm border-0 border-start border-success border-5">
+            <div class="card-body text-center">
+                <h6 class="text-success fw-bold small">RESUELTOS</h6>
+                <h2 class="fw-bold">{{ resueltos }}</h2>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="card shadow-sm p-3 mb-4">
+<div class="card shadow-sm p-3 mb-4 bg-white border-0">
     <form method="GET" action="{{ url_for('reclamos') }}" class="row g-2">
-        <div class="col-md-9">
-            <input type="text" name="busqueda" class="form-control" 
-                   placeholder="Buscar por DNI, Nombre o Dirección..." value="{{ busqueda }}">
+        <div class="col-md-10">
+            <input type="text" name="busqueda" class="form-control" placeholder="Buscar por DNI, Socio, Nombre o Dirección..." value="{{ busqueda }}">
         </div>
-        <div class="col-md-3">
-            <button class="btn btn-primary w-100">🔎 Buscar</button>
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100 shadow-sm">🔎 Buscar</button>
         </div>
     </form>
 </div>
 
-<div class="table-responsive card shadow-sm">
-    <table class="table table-hover align-middle mb-0">
+<div class="table-responsive shadow-sm rounded-3">
+    <table class="table table-hover align-middle mb-0 bg-white">
         <thead class="table-dark">
             <tr>
-                <th>DNI</th>
+                <th class="ps-3">DNI</th>
+                <th>Socio #</th>
                 <th>Nombre</th>
                 <th>Dirección</th>
-                <th>Tipo</th>
-                <th>Estado</th>
-                <th class="text-end">Acción</th>
+                <th class="text-center">Estado</th>
+                <th class="text-end pe-3">Acciones</th>
             </tr>
         </thead>
         <tbody>
             {% for r in reclamos %}
             <tr>
-                <td><strong>{{ r[1] }}</strong></td>
-                <td>{{ r[2] }}</td>
+                <td class="ps-3 fw-bold">{{ r[1] }}</td>
+                <td><span class="badge bg-light text-dark border">{{ r[2] }}</span></td>
                 <td>{{ r[3] }}</td>
                 <td>{{ r[4] }}</td>
-                <td>
-                    {% if r[6] == "Pendiente" %}
-                        <span class="badge rounded-pill bg-warning text-dark">Pendiente</span>
+                <td class="text-center">
+                    {% if r[7] == "Pendiente" %}
+                        <span class="badge rounded-pill bg-warning text-dark px-3">Pendiente</span>
                     {% else %}
-                        <span class="badge rounded-pill bg-success">Resuelto</span>
+                        <span class="badge rounded-pill bg-success px-3">Resuelto</span>
                     {% endif %}
                 </td>
-                <td class="text-end">
-                    {% if r[6] == "Pendiente" %}
-                    <a href="{{ url_for('resolver', id=r[0]) }}" class="btn btn-sm btn-success">
-                        Marcar Resuelto
-                    </a>
-                    {% else %}
-                        <span class="text-muted small">Finalizado</span>
+                <td class="text-end pe-3">
+                    <a href="{{ url_for('editar_reclamo', id=r[0]) }}" class="btn btn-sm btn-outline-primary me-1">✏️ Editar</a>
+                    {% if r[7] == "Pendiente" %}
+                    <a href="{{ url_for('resolver', id=r[0]) }}" class="btn btn-sm btn-success fw-bold">Resolver</a>
                     {% endif %}
                 </td>
             </tr>
@@ -76,5 +80,4 @@
         </tbody>
     </table>
 </div>
-
 {% endblock %}
